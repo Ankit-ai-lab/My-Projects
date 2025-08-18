@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    #feedback { margin-top: 20px; }
+    input, select, textarea, button { width: 100%; padding: 10px; margin-bottom: 10px; }
+    button { cursor: pointer; background-color: #28a745; color: white; border: none; }
+    button:hover { background-color: #218838; }
+  </style>
+</head>
+<body>
+
+  <!-- Feedback section -->
+  <section id="feedback">
+    <h2>Leave a Review</h2>
+    <form id="review-form">
+      <input type="text" id="name" placeholder="Your Name" required><br>
+      <select id="rating" required>
+        <option value="">Rate the Organization</option>
+        <option>5 - Excellent</option>
+        <option>4 - Good</option>
+        <option>3 - Average</option>
+        <option>2 - Poor</option>
+        <option>1 - Very Poor</option>
+      </select><br>
+      <textarea id="feedback-text" placeholder="Write your feedback..." required></textarea><br>
+      <button type="submit">Submit Review</button>
+    </form>
+  </section>
+
+ 
+  <button onclick="window.location.href='index.html'">Back to Main Page</button>
+
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDF13vZpjM_nkoOxbmCQc6F0ueBt_TTOrc",
+      authDomain: "volunteerhub-7e41c.firebaseapp.com",
+      databaseURL: "https://volunteerhub-7e41c-default-rtdb.firebaseio.com",
+      projectId: "volunteerhub-7e41c",
+      storageBucket: "volunteerhub-7e41c.firebasestorage.app",
+      messagingSenderId: "32251232687",
+      appId: "1:32251232687:web:26e0dc1a36a3c76f9aef5a",
+      measurementId: "G-XG0V8CXGCY"
+    };
+
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+ 
+    const form = document.getElementById('review-form');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault(); 
+
+
+      const name = document.getElementById('name').value;
+      const rating = document.getElementById('rating').value;
+      const feedback = document.getElementById('feedback-text').value;
+
+    
+      const reviewRef = ref(database, 'reviews');
+      const newReviewRef = push(reviewRef);
+      set(newReviewRef, {
+        name: name,
+        rating: rating,
+        feedback: feedback,
+        timestamp: new Date().toISOString()
+      }).then(() => {
+        alert('Review submitted successfully!');
+        window.location.href = 'index.html'; 
+      }).catch((error) => {
+        console.error('Error saving review:', error);
+        alert('Failed to submit review.');
+      });
+    });
+  </script>
+
+</body>
+</html>

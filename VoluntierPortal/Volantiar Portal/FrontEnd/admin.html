@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Add Event</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1f1f1f;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 20px;
+      color: antiquewhite;
+    }
+    .container {
+      width: 80%;
+      margin: 20px auto;
+    }
+    .header-text {
+      text-align: center;
+      margin-bottom: 20px;
+      color: rgb(169, 166, 166);
+    }
+    .header-text h2 {
+      color: #00d1ff;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      box-shadow: 0 0 10px #00d1ff;
+    }
+    button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .event-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      width: 300px;
+      text-align: center;
+      box-shadow: rgba(0, 100, 200, 0.2) 0px 8px 24px;
+      background: #f5faff;
+      border-radius: 10px;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header-text">
+      <h2>Add a New Volunteer Opportunity</h2>
+      <p>Fill in the details below to create a new volunteer event.</p>
+    </div>
+
+    <form id="eventForm">
+      <input type="text" id="eventTitle" placeholder="Event Title" required>
+      <input type="text" id="eventOrganization" placeholder="Organization Name" required>
+      <input type="text" id="eventCategory" placeholder="Category" required>
+      <textarea id="eventDescription" placeholder="Event Description" rows="4" required></textarea>
+      <input type="text" id="eventLocation" placeholder="Location" required>
+      <input type="date" id="eventDate" required>
+      <input type="text" id="eventSkills" placeholder="Skills Required (comma-separated)" required>
+      <input type="text" id="eventContact" placeholder="Contact Info" required>
+      <label for="isVirtual">Is Virtual?</label>
+      <select id="isVirtual">
+        <option value="false">No</option>
+        <option value="true">Yes</option>
+      </select>
+      <button type="submit">Add Event</button>
+    </form>
+
+    <div id="message"></div>
+    
+    <h2>Upcoming Volunteer Opportunities</h2>
+    <div id="events" class="event-cards"></div>
+  </div>
+
+  <!-- Firebase Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDF13vZpjM_nkoOxbmCQc6F0ueBt_TTOrc",
+      authDomain: "volunteerhub-7e41c.firebaseapp.com",
+      databaseURL: "https://volunteerhub-7e41c-default-rtdb.firebaseio.com",
+      projectId: "volunteerhub-7e41c",
+      storageBucket: "volunteerhub-7e41c.firebasestorage.app",
+      messagingSenderId: "32251232687",
+      appId: "1:32251232687:web:26e0dc1a36a3c76f9aef5a",
+      measurementId: "G-XG0V8CXGCY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const eventsRef = ref(db, 'events');
+
+    document.getElementById('eventForm').addEventListener('submit', addEvent);
+
+    async function addEvent(event) {
+      event.preventDefault();
+
+      const title = document.getElementById('eventTitle').value;
+      const organization = document.getElementById('eventOrganization').value;
+      const category = document.getElementById('eventCategory').value;
+      const description = document.getElementById('eventDescription').value;
+      const location = document.getElementById('eventLocation').value;
+      const date = document.getElementById('eventDate').value;
+      const skills = document.getElementById('eventSkills').value.split(',');
+      const contact = document.getElementById('eventContact').value;
+      const isVirtual = document.getElementById('isVirtual').value === 'true';
+
+      const newEvent = {
+        title,
+        organization,
+        category,
+        description,
+        location,
+        date,
+        skills_required: skills,
+        contact,
+        isVirtual,
+        id: Date.now().toString()  // Use timestamp as unique ID
+      };
+
+      const newEventRef = ref(db, 'events/' + newEvent.id);
+      await set(newEventRef, newEvent);
+
+      document.getElementById('message').textContent = 'Event added successfully!';
+      fetchEvents();  // Refresh the event list after adding a new one
+    }
+
+    async function fetchEvents() {
+      const snapshot = await get(eventsRef);
+      const eventsData = snapshot.exists() ? snapshot.val() : {};
+      const eventsContainer = document.getElementById('events');
+      eventsContainer.innerHTML = '';  // Clear current events
+
+      Object.values(eventsData).forEach(event => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+          <h3>${event.title}</h3>
+          <p><b>Organization:</b> ${event.organization}</p>
+          <p><b>Category:</b> ${event.category}</p>
+          <p><b>Description:</b> ${event.description}</p>
+          <p><b>Location:</b> ${event.location}</p>
+          <p><b>Date:</b> ${event.date}</p>
+          <p><b>Skills Required:</b> ${event.skills_required.join(', ')}</p>
+          <p><b>Contact:</b> ${event.contact}</p>
+          <p><b>Is Virtual:</b> ${event.isVirtual ? 'Yes' : 'No'}</p>
+        `;
+        eventsContainer.appendChild(card);
+      });
+    }
+
+    fetchEvents();  // Load existing events when the page loads
+  </script>
+</body>
+</html>

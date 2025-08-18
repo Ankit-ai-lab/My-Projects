@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+
+#event-calendar {
+  background: #f9f9f9;
+  padding: 20px;
+  margin: 30px auto;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.event-item {
+  background: white;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: left;
+}
+.event-item h3 {
+  margin: 0;
+  color: #333;
+}
+.event-item p {
+  margin: 5px 0 0;
+  color: #666;
+  font-size: 14px;
+}
+
+
+    </style>
+</head>
+<body>
+    <h2>Upcoming Volunteer Events</h2>
+<div id="event-calendar"></div>
+
+</body>
+</html>
+<script>
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+const db = getDatabase();
+const eventsRef = ref(db, 'volunteerEvents');
+
+get(eventsRef).then((snapshot) => {
+  if (snapshot.exists()) {
+    const events = snapshot.val();
+    const calendar = document.getElementById('event-calendar');
+    calendar.innerHTML = ''; // clear old
+
+    Object.values(events).forEach(event => {
+      const eventDiv = document.createElement('div');
+      eventDiv.className = 'event-item';
+      eventDiv.innerHTML = `<h3>${event.title}</h3><p>${event.date} | ${event.location}</p>`;
+      calendar.appendChild(eventDiv);
+    });
+
+  } else {
+    document.getElementById('event-calendar').innerText = 'No upcoming events.';
+  }
+}).catch((error) => {
+  console.error(error);
+});
+
+</script>

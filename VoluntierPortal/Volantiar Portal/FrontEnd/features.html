@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Volunteer Features</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; background: #f0f0f0; }
+    section { background: white; padding: 15px; margin: 15px 0; border-radius: 8px; box-shadow: 0 0 8px #ccc; }
+    h2 { color: #292b73; margin-bottom: 10px; }
+    input, button { padding: 8px; margin: 5px; border: 1px solid #ccc; border-radius: 5px; }
+    button { background: #292b73; color: white; border: none; }
+    button:hover { background: #00d1ff; color: black; }
+    ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+
+  <section>
+    <h2>Opportunity Search</h2>
+    <input type="text" placeholder="Search by location or interest">
+    <button>Search</button>
+  </section>
+
+  <section>
+    <h2>Volunteer Hours Tracker</h2>
+    <form id="form">
+      <input type="date" id="date" required>
+      <input type="number" id="hours" placeholder="Hours" required>
+      <input type="text" id="desc" placeholder="Description" required>
+      <button type="submit">Add</button>
+    </form>
+    <ul id="log"></ul>
+  </section>
+
+  <section>
+    <h2>Personalized Notifications</h2>
+    <p>You’ll receive alerts for new opportunities that match your profile.</p>
+  </section>
+
+  <section>
+    <h2>Review & Feedback System</h2>
+    <textarea placeholder="Leave your feedback..."></textarea><br>
+    <button>Submit Review</button>
+  </section>
+
+  <section>
+    <h2>Group Volunteering Coordination</h2>
+    <button>Create Group Event</button>
+  </section>
+
+  <section>
+    <h2>Skill-Based Matching</h2>
+    <p>Matched with tasks based on your profile and experience.</p>
+  </section>
+
+  <section>
+    <h2>Impact Reports</h2>
+    <p>Total Hours: <span id="total">0</span></p>
+  </section>
+
+  <section>
+    <h2>Event Calendar</h2>
+    <p>📅 Upcoming Events: April 28 - Tree Plantation | May 1 - Food Drive</p>
+  </section>
+
+  <section>
+    <h2>Social Sharing</h2>
+    <button>Share on Instagram</button>
+  </section>
+
+  <section>
+    <h2>Resource Hub</h2>
+    <ul>
+      <li><a href="#">How to Start Volunteering</a></li>
+      <li><a href="#">Making an Impact</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>In-App Messaging</h2>
+    <input type="text" placeholder="Message a coordinator"><button>Send</button>
+  </section>
+
+  <script>
+    const form = document.getElementById('form'), log = document.getElementById('log'), total = document.getElementById('total');
+    let hoursData = JSON.parse(localStorage.getItem('hours')) || [];
+    function render() {
+      log.innerHTML = ''; let sum = 0;
+      hoursData.forEach(e => { sum += +e.hours; log.innerHTML += `<li>${e.date} - ${e.hours} hrs - ${e.desc}</li>` });
+      total.textContent = sum;
+    }
+    form.onsubmit = e => {
+      e.preventDefault();
+      hoursData.push({ date: form.date.value, hours: form.hours.value, desc: form.desc.value });
+      localStorage.setItem('hours', JSON.stringify(hoursData));
+      form.reset(); render();
+    };
+    render();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+Great! You have 3 days (including today) to complete this project. Here's a day-wise plan with a detailed target list to help you finish it on time. This is realistic and beginner-friendly.
+
+
+---
+
+
+
+
+
+
+
+Page/Feature	Built?
+Home Page	[ ]
+Login / Register	[ ]
+Dashboard (Interests)	[ ]
+Opportunities List	[ ]
+Filters & Search	[ ]
+Details Page	[ ]
+Firebase Connected
+
+
+
+
+
+
+3-Day Target Plan for Volunteer Opportunities Hub
+
+Day 1 – Setup + Design + Basic Layout (HTML + CSS)
+
+Goal: Complete basic UI and structure
+
+Target List:
+
+[ ] Create project folder and basic files (index.html, style.css, script.js)
+
+[ ] Setup HTML boilerplate with title "Volunteer Hub"
+
+[ ] Add Navbar with app name
+
+[ ] Section 1: Search form (Location + Interest + Search Button)
+
+[ ] Section 2: Display search results (empty box for now)
+
+[ ] Section 3: Volunteer hours tracker (input + display)
+
+[ ] Section 4: Notifications area
+
+[ ] Add footer (optional)
+
+[ ] Style layout with CSS (Flexbox or Grid)
+
+[ ] Make layout responsive (for mobile)
+
+
+Tools: VS Code + Live Server
+Output Expected: All sections are visible and styled, no functionality yet.
+
+
+---
+
+Day 2 – Add JavaScript Functionality (Core Features)
+
+Goal: Make UI interactive with dummy data
+
+Target List:
+
+[ ] Add sample opportunities as a JavaScript array
+
+[ ] Implement Search functionality (filter based on interest/location)
+
+[ ] Show results in Section 2 on clicking "Search"
+
+[ ] Add form to log volunteer hours
+
+[ ] Show total volunteer hours updated live
+
+[ ] Implement notification messages (show based on interest)
+
+[ ] Add feedback form with textarea and submit
+
+[ ] Display submitted reviews below the form
+
+
+Optional (if time allows):
+
+[ ] Skill-based matching (basic filter)
+
+[ ] Dummy date picker for calendar
+
+[ ] Social share buttons (non-functional)
+
+
+Output Expected: Site should be interactive and usable, even with dummy data.
+
+
+---
+
+Day 3 – Polish, Test, and Deploy
+
+Goal: Final improvements + Deployment
+
+Target List:
+
+[ ] Fix any bugs or broken features
+
+[ ] Add simple form validation
+
+[ ] Organize code: use comments, clean structure
+
+[ ] Make final UI adjustments (colors, fonts, spacing)
+
+[ ] Add favicon and tab title
+
+[ ] Test on mobile
+
+[ ] Create GitHub repo and push code
+
+[ ] Deploy with GitHub Pages
+
+[ ] Write a simple README.md (you can reuse your idea section)
+
+
+Optional:
+
+[ ] Add loading animation
+
+[ ] Add localStorage to save user hours/reviews
+
+
+Output Expected: Complete, working project live on GitHub Pages.
+
+
+---
+
+Let me know if you want a Notion/Excel tracker for this plan or if you need code examples for any feature!
